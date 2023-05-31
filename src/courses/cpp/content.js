@@ -19,7 +19,7 @@ var content = [
     {
         "title":"C++ Data Types",
         "type":"video",
-        "content":"https://www.youtube.com/watch?v=z4zv2NgzDK0&ab_channel=codeitup"
+        "content":"https://www.youtube.com/embed/z4zv2NgzDK0"
     },
     {
         "title":"Python Data Types",

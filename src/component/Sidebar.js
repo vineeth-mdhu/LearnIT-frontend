@@ -3,6 +3,9 @@ import { useRouter } from 'next/router'
 // import { supabase } from '../utils/supabaseClient'
 import styles from '../styles/Sidebar.module.css'
 import Link from 'next/link'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlay, faCircle, faFileLines, faFileCode } from "@fortawesome/free-regular-svg-icons";
 
 function Sidebar(props) {
     const router = useRouter()
@@ -15,22 +18,28 @@ function Sidebar(props) {
     }
 
     var list_items = [...props.content].map((item,index)=>{return(
-                        <li key={index} className={props.selected==index?styles.nav_item+' '+styles.selected:styles.nav_item}>
+                        <li key={index} className={props.selected==index?styles.nav_item+' '+styles.selected:styles.nav_item} style={{margin:'1px 0'}}>
                             <Link href={'/course/cpp/'+index}>
-                                <div style={{display:'flex'}}>
-                                    <i 
-                                        className={ 
-                                                    item.type=="text"?
-                                                    'fas fa-globe-africa':
-                                                    item.type=="video"?
-                                                    'fas fa-map-marker-alt':
-                                                    item.type=="quiz"?
-                                                    'fas fa-plus-square':
-                                                    'fas fa-truck'
-                                                }
-                                    >
-                                    </i>
-                                    <p>{item.title}</p>
+                                <div style={{marginLeft:'5px',display:'flex', alignItems:'center', justifyContent:'space-between'}}>
+                                    <div style={{display:'flex', alignItems:'center',marginRight:'2px'}}>
+                                        {
+                                            item.type=="text"?
+                                                <FontAwesomeIcon icon={faFileLines} />:
+                                            item.type=="video"?
+                                                <FontAwesomeIcon icon={faCirclePlay}/>:
+                                            item.type=="quiz"?
+                                                <FontAwesomeIcon icon={faFileCode}/>:
+                                                <FontAwesomeIcon icon={faFileCode}/>
+                                        }
+                                        <p style={{marginLeft:'10px'}}>{item.title}</p>
+                                    </div>
+                                    <div>
+                                        {props.selected==index?
+                                            <FontAwesomeIcon icon={faCircle} className={styles.icon}/>
+                                            :
+                                            <FontAwesomeIcon icon={faCheckCircle} className={styles.icon}/>
+                                        }
+                                    </div>
                                 </div>
                             </Link>
                             
@@ -40,6 +49,7 @@ function Sidebar(props) {
     return (
         <nav className={styles.navbar}>
             <ul className={styles.nav}>
+                {/* <FontAwesomeIcon icon={faArrowsLeftToLine} style={{marginLeft:'11px', fontSize:'1.5em'}}/> */}
                 {list_items}
             </ul>
         </nav>

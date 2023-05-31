@@ -26,11 +26,13 @@ function CourseLearn() {
     const [profileData,setProfileData]=useState(null)
 
     const router = useRouter();
-    const {cid, mid } = router.query;
+    const {cid} = router.query;
+    const mid = 0;
 
     useEffect(() => {
         // fetchData()
-    }, [mid])
+        console.log(cid,mid)
+    }, [cid])
 
     async function fetchData() {
             try {
@@ -46,7 +48,6 @@ function CourseLearn() {
             }
     }
 
-    if(cpp && mid)
     return (
         <>
             <Layout>
