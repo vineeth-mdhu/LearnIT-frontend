@@ -82,7 +82,7 @@ function Navbar(props) {
 
     return (
         <>
-            <nav className={styles.navbar}>
+            <div className={styles.navbar}>
                 <div className={styles.navbar_container}>
                     <div className={styles.navbar_logo}>
                         <Link href='/home'><p className={styles.navbar_logo_name}>LearnIT</p></Link>
@@ -144,7 +144,7 @@ function Navbar(props) {
                         </li>
                     </ul>
                 </div>
-            </nav>
+            </div>
         </>
     )
 }

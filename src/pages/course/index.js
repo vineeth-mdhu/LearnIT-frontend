@@ -36,7 +36,7 @@ function Course() {
         <>
             <Layout>
                 <div>
-                    
+                    courses
                 </div>
             </Layout>
         </>

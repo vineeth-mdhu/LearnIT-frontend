@@ -4,9 +4,9 @@
 @import url('https://pro.fontawesome.com/releases/v5.10.0/css/all.css');
 
 :root{
-  /* --color-primary:#7367f0; */
-  --color-primary:#f12255;
+  --color-primary:#7367f0;
   --color-secondary:#82868b;
+  --white: #fff;
   --color-green :#33CC99;
   --color-blue : #00CCFF;
   --color-pink :#00CCFF;

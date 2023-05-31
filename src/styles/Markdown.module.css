@@ -1,0 +1,14 @@
+/* Code */
+.code {
+position: relative;
+}
+
+.code .copy_icon {
+position: absolute;
+top: 1rem;
+right: 1rem;
+font-size: 1.25em;
+z-index: 5;
+color: white;
+cursor: pointer;
+}

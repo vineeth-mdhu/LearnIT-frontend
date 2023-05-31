@@ -8,16 +8,21 @@
 }
 
 .btn_primary{
-    background-color: var(_first-color-second);
-    color: var(_white);
-    border: 1px solid var(_first-color-second);
+    background-color: var(--color-primary);
+    color: white;
+    border: 1px solid var(--color-primary);
 }
 
 .btn_outline{
     background-color: transparent;
-    color: var(_white);
-    border: 1px solid var(_first-color-second);
+    color: black;
+    border: 1px solid var(--color-primary);
     transition: all ease-out 0.3s;
+}
+
+.btn_small{
+    padding: 5px 15px;
+    font-size: 15px;
 }
 
 .btn_medium{
@@ -31,13 +36,11 @@
 }
 
 .btn_outline:hover{
-    background: var(_first-color-second);
-    color: var(_white);
-    transition: all ease-out 0.3s;
+    background: var(--color-primary);
+    color: var(--white);
 }
 
 .btn_primary:hover
 {
-    background-color: var(_first-color-alt);
-    transition: all ease-out 0.3s;
+    background-color: var(--color-primary);
 }
