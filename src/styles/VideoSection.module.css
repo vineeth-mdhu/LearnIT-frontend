@@ -1,0 +1,88 @@
+.vid_style{
+    border:5px solid red;
+    border-radius: 20px;
+}
+
+.video_container{
+    color:white;
+    height: 500px;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.3);
+    object-fit: contain;
+}
+
+.img{
+    position: absolute;
+    object-fit: cover;
+    width: 100%;
+    height: max-content;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    transition: all .5s;
+    filter: grayscale(0%) contrast(1.3) blur(3px);
+}
+
+.bgImg::after{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 200%;
+    background: linear-gradient(-45deg, hsla(var(--hue-color), 35%, 20%,0.3), hsla(var(--hue-color), 29%, 16%,0.3)) ;
+    pointer-events: none;
+    mix-blend-mode: color;
+}
+
+.video_container > h1 {
+    font-weight: 300;
+    text-align: center;
+    color: var(--white);
+    font-size: 50px;
+    margin-top: 0px;
+}
+.video_container h1 .styleh1{
+    font-weight: 600;
+}
+
+.video_container p {
+    text-align: center;
+    font-weight: 300;
+    margin-top: 8px;
+    color: var(--white);
+    font-size: 35px;
+}
+.video_container p .pbold{
+    font-weight: 500;
+}
+.video_container p .pcolor{
+    font-weight: 600;
+    mix-blend-mode: unset;
+}
+
+.video_container .video_btns{
+    margin-top: 20px;
+}
+
+.video_container .video_btns > .btns{
+    margin: 6px;
+}
+
+.fa-play-circle{
+    margin-left: 4px;
+}
+
+.video_container .video_btns .fal{
+    margin-left: 10px;
+    transition: .3s;
+}
+.video_container .video_btns .btn:hover .fal{
+    transform: translateX(3px);
+
+}

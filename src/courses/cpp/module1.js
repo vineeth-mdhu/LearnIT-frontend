@@ -1,0 +1,9 @@
+import React, { useState, useEffect } from 'react'
+
+var content=
+        <div>
+        C++ is a general-purpose programming language and is widely used nowadays for competitive programming. It has imperative, object-oriented and generic programming features. C++ runs on lots of platforms like Windows, Linux, Unix, Mac etc.<br/><br/>C++ (pronounced see plus plus) is a computer programming language based on C. It was created for writing programs for many different purposes. In the 1990s, C++ became one of the most used programming languages in the world. Like C, C++ uses manual memory management (unlike most mainstream languages, where memory management is automatic), while the syntax usually used for it is different.<br/><br/>The C++ programming language was developed by Bjarne Stroustrup at Bell Labs in the 1980s, and was originally named 'C with classes'. The language was planned as an improvement on the C programming language, adding features based on object-oriented programming. Step by step, a lot of advanced features were added to the language, like exception handling, templates, 'move semantics' and namespaces (not full module support, while that was added later) and new operator overloading capabilities were added in versions C++11 and C++20.<br/><br/>C++ runs on a most platforms (all mainstream ones), such as Windows, macOS, and the various versions of UNIX, for example Linux. Introduction to C++ language is a practical approach to describe the concepts of C++ for beginners to advanced software engineers.<br/><br/>C++ is a general-purpose programing language which means that it can be used to create different variety of applications. C++ is used for variety of application domains.
+        </div>
+        
+
+export default content

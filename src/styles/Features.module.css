@@ -1,0 +1,31 @@
+.home__features{
+    background-color: white;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.home__features .feature{
+    margin: 25px 20px;
+    text-align: center;
+    max-width: 250px;
+}
+
+.home__features .feature_icon{
+    font-size: 25px;
+    margin-bottom: 5px;
+    font-weight: 100;
+}
+
+.home__features .feature_title{
+    font-size: 20px;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.home__features .feature_desc{
+    font-size: 13px;
+    font-weight: lighter;
+}

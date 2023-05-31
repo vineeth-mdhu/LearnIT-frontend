@@ -1,0 +1,8 @@
+.children
+{
+    width:100vw;
+    margin-top: calc(var(--navbar-height));
+    height:calc(var(100vh - var(--navbar-height)));
+    overflow-y: scroll;
+    background-color:var(--bg-color);
+}
