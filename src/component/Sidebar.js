@@ -21,7 +21,7 @@ function Sidebar(props) {
                         <li key={index} className={props.selected==index?styles.nav_item+' '+styles.selected:styles.nav_item} style={{margin:'1px 0'}}>
                             <Link href={'/course/cpp/'+index}>
                                 <div style={{marginLeft:'5px',display:'flex', alignItems:'center', justifyContent:'space-between'}}>
-                                    <div style={{display:'flex', alignItems:'center',marginRight:'2px'}}>
+                                    <div style={{display:'flex', alignItems:'center'}}>
                                         {
                                             item.type=="text"?
                                                 <FontAwesomeIcon icon={faFileLines} />:
@@ -31,9 +31,9 @@ function Sidebar(props) {
                                                 <FontAwesomeIcon icon={faFileCode}/>:
                                                 <FontAwesomeIcon icon={faFileCode}/>
                                         }
-                                        <p style={{marginLeft:'10px'}}>{item.title}</p>
+                                        <p style={{marginLeft:'15px'}}>{item.title}</p>
                                     </div>
-                                    <div>
+                                    <div style={{marginLeft:'10px'}}>
                                         {props.selected==index?
                                             <FontAwesomeIcon icon={faCircle} className={styles.icon}/>
                                             :

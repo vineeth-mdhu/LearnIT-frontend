@@ -1,7 +1,7 @@
 .navbar{
     width: var(--sidebar-width);
-    min-height:  calc(100vh - var(--navbar-height));
-    height: 100%;
+    height:  calc(100vh - var(--navbar-height));
+    overflow-y: scroll;
     background-color: var(--color-container);
     color: var(--color-black);
     display: flex;
@@ -44,7 +44,7 @@
 }
 
 .nav_item{
-    padding: 10px;
+    padding: 20px;
     width: 100%;
     cursor: pointer;
     transition: all .1s ease-in-out;
