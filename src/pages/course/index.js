@@ -31,6 +31,7 @@ function Course() {
                 alert(error.message)
             }
     }
+    
     // if(profileData)
     return (
         <>

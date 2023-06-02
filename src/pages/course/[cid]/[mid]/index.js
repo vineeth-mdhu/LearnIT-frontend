@@ -4,7 +4,8 @@ import Markdown from "markdown-to-jsx"
 import Code from '@/component/Code';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheckCircle, faArrowAltCircleRight } from "@fortawesome/free-regular-svg-icons";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { faCheckCircle } from "@fortawesome/free-regular-svg-icons";
 
 import { useRouter } from 'next/router'
 import dynamic from "next/dynamic";
@@ -62,7 +63,7 @@ function CourseLearn() {
             <Layout>
                 <div className={styles.main}>
                     <div className={sidebarToogle?styles.sidebar+' '+styles.sidebar_show:styles.sidebar+' '+styles.sidebar_hide}>
-                        <Sidebar content={cpp} selected={mid}/>
+                        <Sidebar content={cpp} course={cid} selected={mid}/>
                     </div>
                     <div className={styles.container}>
                         <h1 style={{marginBottom:'20px', textDecoration: 'underline'}}>{cpp[mid].title}</h1>
@@ -98,7 +99,7 @@ function CourseLearn() {
                             </Button>
                             <Button  buttonStyle="btn_outline" buttonSize="btn_small" link='#' >
                                 <div style={{display:'flex', alignItems:'center'}}>
-                                    <p style={{marginRight:'10px'}}>Next</p><FontAwesomeIcon icon={faArrowAltCircleRight}/>
+                                    <p style={{marginRight:'10px'}}>Next</p><FontAwesomeIcon icon={faArrowRight}/>
                                 </div>
                             </Button>
                         </div>

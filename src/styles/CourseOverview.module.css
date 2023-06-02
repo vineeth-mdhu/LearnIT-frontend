@@ -1,0 +1,17 @@
+.desc{
+    padding: 30px 150px;
+}
+
+.banner{
+    min-height:300px;
+    padding: 30px 150px;
+    background-color: #f2f6fd;
+}
+.iconset{
+    margin: 0 0 30px 0px;
+    display: flex;
+}
+.iconset div{
+    margin: 0px 20px;
+    font-size: 1.15em;
+}

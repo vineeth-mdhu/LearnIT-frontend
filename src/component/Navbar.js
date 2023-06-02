@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
+
 import { useRouter } from 'next/router'
 import styles from '../styles/Navbar.module.css'
 import dynamic from "next/dynamic";
@@ -56,14 +56,14 @@ function Navbar({session}) {
                         {session?
                             <div  style={{paddingRight:'10px'}} className={styles.nav_menu}>
                                 
-                                <li className={styles.nav_item}>
-                                    <Link href='/home'><i className="far fa-home" style={{fontSize:'1.5em'}}></i></Link>
-                                </li>
                                 
                                 <li className={styles.nav_item}>
                                     <Link href='/explore'><i className="far fa-compass" style={{fontSize:'1.5em'}}></i></Link>
                                 </li>
         
+                                <li className={styles.nav_item}>
+                                    <Link href='/home'><i className="far fa-home" style={{fontSize:'1.5em'}}></i></Link>
+                                </li>
                                 
                                 <li className={styles.nav_item}>
                                     <Link href='/test'><i className="far fa-hammer" style={{fontSize:'1.5em'}}></i></Link>

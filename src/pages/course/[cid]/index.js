@@ -1,80 +1,127 @@
 import React, { useState, useEffect } from 'react'
-// import { supabase } from '../../utils/supabaseClient'
+import { useUser, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
 import dynamic from "next/dynamic";
+import Markdown from "markdown-to-jsx"
+import Code from '@/component/Code';
 
-import styles from '@/styles/CourseLearn.module.css'
+import styles from '@/styles/CourseOverview.module.css'
 import Link from 'next/link'
 import Layout from '@/component/Layout'
-import Sidebar from '@/component/Sidebar';
 
-import cpp from '@/courses/cpp/content.js'
-import module1 from '@/courses/cpp/module1';
-import module2 from '@/courses/cpp/module2';
-import module3 from '@/courses/cpp/module3';
-import module5 from '@/courses/cpp/module5';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle, faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlay, faCircle, faFileLines, faFileCode } from "@fortawesome/free-regular-svg-icons";
+import Button from '@/component/Button';
 
-
-function CourseLearn() {
-    const [sidebarToogle, setSidebarToogle] = useState(false)
-    var modules = [module1,module2,module3,module5]
-
-    const toogleSidebar = ()=>{
-        setSidebarToogle(!sidebarToogle)
-    }
-
-    const [profileData,setProfileData]=useState(null)
+function CourseOverview() {
+    const supabase = useSupabaseClient()
+    const user = useUser()
 
     const router = useRouter();
     const {cid} = router.query;
     const mid = 0;
 
+    const [loading, setLoading] = useState(true)
+    const [content, setContent] = useState(null)
+    const [overview, setOverview] = useState(null)
+
     useEffect(() => {
-        // fetchData()
+        fetchData()
         console.log(cid,mid)
     }, [cid])
 
+    useEffect(() => {
+        fetchOverview()
+    }, [content])
+
     async function fetchData() {
-            try {
-                const { data, error } = await supabase.from('organization').select('*,post(*,organization(*))').eq('id', oid)
-
-                if (data) {
-                    console.log(data[0])
-                    setProfileData(data[0])
-                }
-
-            } catch (error) {
-                alert(error.message)
+        try {
+            setLoading(true)
+      
+            let { data, error, status } = await supabase
+            .from('courses')
+            .select('*')
+            .eq('course_id', 1)
+      
+            if (error && status !== 406) {
+              throw error
             }
+      
+            if (data) {
+                console.log(data)
+                setContent(data[0])
+            }
+          } catch (error) {
+            alert('Error loading user data!')
+            console.log(error)
+          } finally {
+            setLoading(false)
+          }
     }
 
+    async function fetchOverview() {
+        if(content)
+            try {
+                setLoading(true)
+          
+                fetch(content.overview).then((response) => response.text()).then((text) => {
+                    setOverview(text)
+                  })
+          
+              } catch (error) {
+                alert('Error loading user data!')
+                console.log(error)
+              } finally {
+                setLoading(false)
+              }
+    }
+
+    if(content && overview)
     return (
         <>
             <Layout>
                 <div className={styles.main}>
-                    <div className={sidebarToogle?styles.sidebar+' '+styles.sidebar_show:styles.sidebar+' '+styles.sidebar_hide}>
-                        <Sidebar content={cpp} selected={mid}/>
+                    
+                    <div className={styles.banner}>
+                        <h1>{content.course_name} <FontAwesomeIcon icon={faCheckCircle}  style={{color:'green'}}/></h1>
+                        <div className={styles.iconset}>
+                            <div><FontAwesomeIcon icon={faFileLines} /> 75 Documents</div>
+                            <div><FontAwesomeIcon icon={faCirclePlay}/> 10 Videos</div>
+                            <div><FontAwesomeIcon icon={faFileCode}/> 100 Questions</div>
+                        </div>
+                        <Link href='/course/cpp/1'>
+                            <Button  buttonStyle="btn_outline" buttonSize="btn_small" link='#' >
+                                <div style={{display:'flex', alignItems:'center'}}>
+                                    <p style={{marginRight:'10px'}}>Start Learning</p><FontAwesomeIcon icon={faArrowRight}/>
+                                </div>
+                            </Button>
+                        </Link>
                     </div>
-                    <div className={styles.container}>
-                        {
-                            cpp[mid].type=='text'?
-                            <div>
-                                {modules[cpp[mid].content]}
-                            </div>
-                            :
-                            cpp[mid].type=='video'?
-                            <iframe src={cpp[mid].content}/>
-                            :
-                            cpp[mid].type=='quiz'?
-                            'quiz'
-                            :''
-                        }
-                    </div> 
+                    <div className={styles.desc}>
+                        <Markdown options={{
+                            overrides: {
+                            Code: {
+                                component: Code
+                            }
+                            }
+                        }} style={{width:'100%'}}>
+                            {overview}
+                        </Markdown>
+                    </div>
                 </div>
             </Layout>
+        </>
+    )
+    else
+    return(
+        <>
+            <div>
+                loading...
+            </div>
         </>
     )
 }
 
 
-export default CourseLearn
+export default CourseOverview

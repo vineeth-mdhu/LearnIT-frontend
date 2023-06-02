@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import styles from '../styles/Sidebar.module.css'
 import Link from 'next/link'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import { faCheckCircle, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { faCirclePlay, faCircle, faFileLines, faFileCode } from "@fortawesome/free-regular-svg-icons";
 
 function Sidebar(props) {
@@ -49,7 +49,10 @@ function Sidebar(props) {
     return (
         <nav className={styles.navbar}>
             <ul className={styles.nav}>
-                {/* <FontAwesomeIcon icon={faArrowsLeftToLine} style={{marginLeft:'11px', fontSize:'1.5em'}}/> */}
+                <Link href='/course/cpp' style={{marginBottom:'15px'}}>
+                    <FontAwesomeIcon icon={faArrowLeft} style={{margin:'0 15px', fontSize:'1em'}}/>
+                    {props.course}
+                </Link>
                 {list_items}
             </ul>
         </nav>

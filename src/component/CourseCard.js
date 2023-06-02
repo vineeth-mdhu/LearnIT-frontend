@@ -12,12 +12,12 @@ function CourseCard(props) {
                     </div>
                     <div className={styles.course_details}>
                         <span className={styles.course_catagory}>{props.category}</span>
-                        <h4><a href="/products">{props.title}</a></h4>
-                        <p>{props.detail}</p>
+                        <h4>{props.title}</h4>
+                        {/* <p>{props.detail}</p> */}
                         <div className={styles.course_bottom_details} style={{display:props.price?'':'none'}}>
-                            <div className={styles.course_price} ><small>{props.priceOld}</small>{props.price}</div>
+                            {/* <div className={styles.course_price} ><small>{props.priceOld}</small>{props.price}</div> */}
                             <div className={styles.course_links} >
-                                <i className="far fa-heart"></i>
+                                <i className="far fa-plus-circle"></i>
                                 <a href={props.path} target='blank'><i className="far fa-play"></i></a>
                             </div>
                         </div>

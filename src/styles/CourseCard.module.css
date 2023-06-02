@@ -5,19 +5,17 @@
     align-items: center;
     flex: 1;
     border-radius: 10px;
-    min-width: 250px;
+    min-width: 200px;
     margin: 10px;
   }
 
 .course_card {
     position: relative;
-    box-shadow: 0 2px 7px #dfdfdf;
     width: 100%;
     margin: 50px auto;
     background: #fafafa;
     border-radius: 10px;
-    border: 1px solid var(--first-color-second);
-    box-shadow: 0 6px 20px rgba(56, 125, 255, 0.2);
+    border: 1px solid black;
 }
 
 .badge {
@@ -39,9 +37,9 @@
     bottom: 0;
     right: 0;
     margin-left: 10px;
-    padding: 10px 10px;
+    padding: 5px 5px;
     max-width: calc((100%) - 60px);
-    font-size: 15px;
+    font-size: 0.7em;
     font-weight: 700;
     color: var(--white);
     background-color: var(--color-green);
@@ -55,10 +53,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 300px;
+    height: 200px;
     padding: 40px;
     background: #f0f0f0;
-    border-radius: 5px;
     overflow: hidden;
 }
 
@@ -77,7 +74,7 @@
     transition: all 0.2s linear;
   }
   .course_tumb img:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
   }
 
 .course_details {
@@ -111,8 +108,8 @@
     font-size: 15px;
     margin-bottom: 18px;
     color: #999;
-    max-width: 300px;
-    min-height: 70px;
+    max-width: 200px;
+    min-height: 30px;
 }
 
 .course_bottom_details {
@@ -123,7 +120,7 @@
 
 .course_bottom_details div {
     float: left;
-    width: 50%;
+    width: 100%;
 }
 
 .course_price {
@@ -149,7 +146,8 @@
     margin-left: 25px;
     margin-right: 10px;
     transition: 0.3s;
-    font-size: 20px;
+    font-size: 1.25em;
+    font-weight: lighter;
     cursor: pointer;
 }
 .course_links .fa-heart{
