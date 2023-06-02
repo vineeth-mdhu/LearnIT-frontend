@@ -103,88 +103,44 @@ function Home() {
             }
         }
     }
+    
+    return (
+        <>
+            <Layout>
+                <div className={styles.main}>
+                    <h2>My Courses</h2>
+                    <div className={styles.course_display}>
+                    <CourseCard
+                        // badge='Sale-50%'
+                        label='Beginner'
+                        src='images/img-6.peg'
+                        category='Programming'
+                        title='C++'
+                        detail=''
+                    />
+                    <CourseCard
+                        // badge='Sale-50%'
+                        label='Beginner'
+                        src='images/img-6.jg'
+                        category='Programming'
+                        title='Python'
+                        detail=''
+                    />
+                    <CourseCard
+                        // badge='Sale-50%'
+                        label='Beginner'
+                        src='images/img-6.jpe'
+                        category='Programming'
+                        title='Computer Networks'
+                        detail=''
+                    />
+                    </div>
+                    <Footer/>
+                </div>
+            </Layout>
 
-    if(feedData && type == 'organization')
-    {
-        let feed = [...feedData].map((item,index)=>{
-            return (
-                <Card data={item} profileData={profile} userType={type}/>
-            )
-        })
-        return (
-            <>
-                <Layout>
-                    <div>
-                        {feed}
-                    </div>
-                </Layout>
-    
-            </>
-        )
-    }
-    else if(feedData && type == 'user')
-    {
-        let feed = [...feedData].map((item,index)=>{
-            return (
-                <Card data={item.post} profileData={profile} userType={type}/>
-            )
-        })
-        return (
-            <>
-                <Layout>
-                    <div>
-                        {feed}
-                    </div>
-                </Layout>
-    
-            </>
-        )
-    }
-    else
-    {
-        return (
-            <>
-                <Layout>
-                    <div className={styles.main}>
-                        <div className={styles.course_display}>
-                        <CourseCard
-                            // badge='Sale-50%'
-                            label='Beginner'
-                            src='images/img-6.peg'
-                            category='Programming'
-                            title='C++'
-                            detail=''
-                            // priceOld='₹200'
-                            price=' '
-                        />
-                        <CourseCard
-                            // badge='Sale-50%'
-                            label='Beginner'
-                            src='images/img-6.jg'
-                            category='Programming'
-                            title='Python'
-                            detail=''
-                            // priceOld='₹200'
-                            price=' '
-                        />
-                        <CourseCard
-                            // badge='Sale-50%'
-                            label='Beginner'
-                            src='images/img-6.jpe'
-                            category='Programming'
-                            title='Computer Networks'
-                            detail=''
-                            // priceOld='₹200'
-                            price=' '
-                        />
-                        </div>
-                        <Footer/>
-                    </div>
-                </Layout>
-    
-            </>
-        )
-    }
+        </>
+    )
     
 }
 

@@ -10,9 +10,10 @@ import Link from 'next/link'
 import Layout from '@/component/Layout'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheckCircle, faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { faCheckCircle, faArrowRight , faCirclePlus} from "@fortawesome/free-solid-svg-icons";
 import { faCirclePlay, faCircle, faFileLines, faFileCode } from "@fortawesome/free-regular-svg-icons";
 import Button from '@/component/Button';
+import Loader from '@/component/Loader';
 
 function CourseOverview() {
     const supabase = useSupabaseClient()
@@ -20,7 +21,6 @@ function CourseOverview() {
 
     const router = useRouter();
     const {cid} = router.query;
-    const mid = 0;
 
     const [loading, setLoading] = useState(true)
     const [content, setContent] = useState(null)
@@ -28,36 +28,39 @@ function CourseOverview() {
 
     useEffect(() => {
         fetchData()
-        console.log(cid,mid)
-    }, [cid])
+        console.log(cid)
+    }, [])
 
     useEffect(() => {
         fetchOverview()
     }, [content])
 
     async function fetchData() {
-        try {
-            setLoading(true)
-      
-            let { data, error, status } = await supabase
-            .from('courses')
-            .select('*')
-            .eq('course_id', 1)
-      
-            if (error && status !== 406) {
-              throw error
-            }
-      
-            if (data) {
-                console.log(data)
-                setContent(data[0])
-            }
-          } catch (error) {
-            alert('Error loading user data!')
-            console.log(error)
-          } finally {
-            setLoading(false)
-          }
+        if(cid)
+        {
+            try {
+                setLoading(true)
+          
+                let { data, error, status } = await supabase
+                .from('courses')
+                .select('*')
+                .eq('course_id', cid)
+          
+                if (error && status !== 406) {
+                  throw error
+                }
+          
+                if (data) {
+                    console.log(data)
+                    setContent(data[0])
+                }
+              } catch (error) {
+                // alert('Error loading user data!')
+                console.log(error)
+              } finally {
+                setLoading(false)
+              }
+        }
     }
 
     async function fetchOverview() {
@@ -70,7 +73,7 @@ function CourseOverview() {
                   })
           
               } catch (error) {
-                alert('Error loading user data!')
+                // alert('Error loading user data!')
                 console.log(error)
               } finally {
                 setLoading(false)
@@ -86,17 +89,29 @@ function CourseOverview() {
                     <div className={styles.banner}>
                         <h1>{content.course_name} <FontAwesomeIcon icon={faCheckCircle}  style={{color:'green'}}/></h1>
                         <div className={styles.iconset}>
-                            <div><FontAwesomeIcon icon={faFileLines} /> 75 Documents</div>
-                            <div><FontAwesomeIcon icon={faCirclePlay}/> 10 Videos</div>
-                            <div><FontAwesomeIcon icon={faFileCode}/> 100 Questions</div>
+                            <div><FontAwesomeIcon icon={faFileLines} /> {content.details.documents} Documents</div>
+                            <div><FontAwesomeIcon icon={faCirclePlay}/> {content.details.videos} Videos</div>
+                            <div><FontAwesomeIcon icon={faFileCode}/> {content.details.questions} Questions</div>
                         </div>
-                        <Link href='/course/cpp/1'>
+                        <Link href={{pathname:'/course/'+content.course_id+'/learn'}}>
                             <Button  buttonStyle="btn_outline" buttonSize="btn_small" link='#' >
                                 <div style={{display:'flex', alignItems:'center'}}>
                                     <p style={{marginRight:'10px'}}>Start Learning</p><FontAwesomeIcon icon={faArrowRight}/>
                                 </div>
                             </Button>
                         </Link>
+                        <Link href={{pathname:'/course/'+content.course_id+'/evaluation'}}>
+                            <Button  buttonStyle="btn_outline" buttonSize="btn_small" link='#' >
+                                <div style={{display:'flex', alignItems:'center'}}>
+                                    <p style={{marginRight:'10px'}}>Take Test</p><FontAwesomeIcon icon={faArrowRight}/>
+                                </div>
+                            </Button>
+                        </Link>
+                        <Button  buttonStyle="btn_outline" buttonSize="btn_small" link='#' >
+                            <div style={{display:'flex', alignItems:'center'}}>
+                                <p style={{marginRight:'10px'}}>Add To Courses</p><FontAwesomeIcon icon={faCirclePlus}/>
+                            </div>
+                        </Button>
                     </div>
                     <div className={styles.desc}>
                         <Markdown options={{
@@ -116,9 +131,9 @@ function CourseOverview() {
     else
     return(
         <>
-            <div>
-                loading...
-            </div>
+            <Layout>
+                <Loader/>
+            </Layout>
         </>
     )
 }

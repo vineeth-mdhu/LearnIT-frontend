@@ -1,6 +1,7 @@
+import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
-const Test = ({ questions, timeLimit }) => {
+const Test = ({ questions, timeLimit, cid }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [showResults, setShowResults] = useState(false);
@@ -169,9 +170,11 @@ const Test = ({ questions, timeLimit }) => {
                     </button>
                 )}
                 {showResultButton && (
-                    <button className="submit-button" onClick={()=>console.log("exit")}>
+                  <Link href={'/course/'+cid}>
+                    <button className="submit-button">
                         Exit
                     </button>
+                  </Link>
                 )}
 
             </div>

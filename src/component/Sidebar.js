@@ -10,17 +10,15 @@ import { faCirclePlay, faCircle, faFileLines, faFileCode } from "@fortawesome/fr
 function Sidebar(props) {
     const router = useRouter()
 
-    async function signOut() {
-        await supabase.auth.signOut()
-        document.cookie = "Event=;";
-        document.cookie = "Session=;";
-        router.push('/')
+    var update = (mid) => {
+        // console.log(mid)
+        props.update_mid(mid)
     }
 
+    // console.log(props.content)
     var list_items = [...props.content].map((item,index)=>{return(
                         <li key={index} className={props.selected==index?styles.nav_item+' '+styles.selected:styles.nav_item} style={{margin:'1px 0'}}>
-                            <Link href={'/course/cpp/'+index}>
-                                <div style={{marginLeft:'5px',display:'flex', alignItems:'center', justifyContent:'space-between'}}>
+                                <div style={{marginLeft:'5px',display:'flex', alignItems:'center', justifyContent:'space-between'}} onClick={()=>update(index)}>
                                     <div style={{display:'flex', alignItems:'center'}}>
                                         {
                                             item.type=="text"?
@@ -41,7 +39,6 @@ function Sidebar(props) {
                                         }
                                     </div>
                                 </div>
-                            </Link>
                             
                         </li>
                     )})
@@ -49,9 +46,9 @@ function Sidebar(props) {
     return (
         <nav className={styles.navbar}>
             <ul className={styles.nav}>
-                <Link href='/course/cpp' style={{marginBottom:'15px'}}>
+                <Link href={'/course/'+props.course} style={{marginBottom:'15px'}}>
                     <FontAwesomeIcon icon={faArrowLeft} style={{margin:'0 15px', fontSize:'1em'}}/>
-                    {props.course}
+                    {props.course_name}
                 </Link>
                 {list_items}
             </ul>

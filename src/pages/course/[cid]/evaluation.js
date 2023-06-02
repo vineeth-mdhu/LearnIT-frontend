@@ -1,5 +1,6 @@
 import Layout from '@/component/Layout'
 import React from 'react'
+import { useRouter } from 'next/router'
 
 import cpp from '@/courses/cpp/content.js'
 import Test from '@/component/Test'
@@ -107,13 +108,15 @@ function Evaluation() {
     answerIndex: 0
   }
 ];
+  const router = useRouter();
+  const {cid} = router.query;
 
-
+    if(cid)
     return (
         <div>
             <Layout>
                 <div>
-                    <Test questions={questions} timeLimit={100} />
+                    <Test cid={cid} questions={questions} timeLimit={100} />
                 </div>
             </Layout>
             

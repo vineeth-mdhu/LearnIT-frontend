@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-// import { supabase } from '../utils/supabaseClient'
+import { useUser, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
 import dynamic from "next/dynamic";
 
@@ -8,183 +8,76 @@ import Link from 'next/link'
 import Layout from '../component/Layout'
 import CourseCard from '@/component/CourseCard';
 import Footer from '@/component/Footer';
-// import Card from '../component/Card';
+import Loader from '@/component/Loader';
 
 function Explore() {
-    const [profile, setProfile] = useState(null)
-    const [type, setType] = useState(null)
-    const [index, setIndex] = useState(0)
-    const [feedData, setFeedData] = useState(null)
+    const supabase = useSupabaseClient()
+    const [data, setData] = useState(null)
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        // fetchProfile()
+        fetchData()
     }, [])
 
-    useEffect(() => {
-        // fetchData()
-    }, [profile])
-
-    useEffect(() => {
-        // fetchFeed()
-    }, [type])
-
-    async function fetchProfile() {
-        try {
-            const profileData = await supabase.auth.user()
-
-            if (profileData) {
-                setProfile(profileData)
-            }
-
-        } catch (error) {
-            alert(error.message)
-        }
-    }
-
     async function fetchData() {
-        if (profile)
-            try {
-                const { data, error } = await supabase.from('type').select('*').eq('entity_id', profile.id)
-
-                if (data) {
-                    console.log(data[0].type)
-                    setType(data[0].type)
-                }
-
-            } catch (error) {
-                alert(error.message)
+        try {
+            setLoading(true)
+      
+            let { data, error, status } = await supabase
+            .from('courses')
+            .select('*')
+      
+            if (error && status !== 406) {
+              throw error
             }
-    }
-
-    async function fetchFeed() {
-        if (profile && type) {
-            if (type == "organization") {
-                let aff = []
-                try {
-                    const { data, error } = await supabase.from('organization').select('*').eq('id', profile.id)
-
-                    if (data) {
-                        console.log('afflesi', data[0].affeliate_org)
-                        aff = [...data[0].affeliate_org]
-                        console.log(aff)
-                        // setType(data[0].type)
-                        try {
-                            const { data, error } = await supabase.from('post').select('*,organization(*)').in('owner_id', aff)
-
-                            if (data) {
-                                console.log(data)
-                                setFeedData(data)
-                            }
-
-                        } catch (error) {
-                            console.log(error.message)
-                        }
-                    }
-
-                } catch (error) {
-                    console.log(error.message)
-                }
+      
+            if (data) {
+                console.log(data)
+                setData(data)
             }
-            else {
-                const success = await supabase
-                    .from('post_buffer')
-                    .select(
-                        'post(*,organization(*))'
-                    )
-                    .eq('user_id', profile.id)
-                    .order('created_at', { ascending: false })
-
-                    // setIndex(index+6)
-
-                if (success) {
-                    console.log(success.data)
-                    setFeedData(success.data)
-                }
-            }
+          } catch (error) {
+            alert('Error loading user data!')
+            console.log(error)
+          } finally {
+            setLoading(false)
         }
     }
 
-    if(feedData && type == 'organization')
-    {
-        let feed = [...feedData].map((item,index)=>{
-            return (
-                <Card data={item} profileData={profile} userType={type}/>
-            )
-        })
-        return (
-            <>
-                <Layout>
-                    <div>
-                        {feed}
-                    </div>
-                </Layout>
-    
-            </>
-        )
+    if(data){
+        var courses = [...data].map((item,index)=>{return(
+                <CourseCard
+                    // badge='Sale-50%'
+                    label='Beginner'
+                    src={item.banner}
+                    course_id={item.course_id}
+                    category='Programming'
+                    title={item.course_name}
+                    detail={item.desc}
+                />
+        )})
     }
-    else if(feedData && type == 'user')
-    {
-        let feed = [...feedData].map((item,index)=>{
-            return (
-                <Card data={item.post} profileData={profile} userType={type}/>
-            )
-        })
-        return (
-            <>
-                <Layout>
-                    <div>
-                        {feed}
+
+    if(data)
+    return (
+        <>
+            <Layout>
+                <div className={styles.main}>
+                    <h2>Explore All Courses</h2>
+                    <div className={styles.course_display}>
+                        {courses}
                     </div>
-                </Layout>
-    
-            </>
-        )
-    }
+                    <Footer/>
+                </div>
+            </Layout>
+
+        </>
+    )
     else
-    {
-        return (
-            <>
-                <Layout>
-                    <div className={styles.main}>
-                        <div className={styles.course_display}>
-                        <CourseCard
-                            // badge='Sale-50%'
-                            label='Beginner'
-                            src='images/img-6.peg'
-                            category='Programming'
-                            title='C++'
-                            detail=''
-                            // priceOld='₹200'
-                            price=' '
-                        />
-                        <CourseCard
-                            // badge='Sale-50%'
-                            label='Beginner'
-                            src='images/img-6.jg'
-                            category='Programming'
-                            title='Python'
-                            detail=''
-                            // priceOld='₹200'
-                            price=' '
-                        />
-                        <CourseCard
-                            // badge='Sale-50%'
-                            label='Beginner'
-                            src='images/img-6.jpe'
-                            category='Programming'
-                            title='Computer Networks'
-                            detail=''
-                            // priceOld='₹200'
-                            price=' '
-                        />
-                        </div>
-                        <Footer/>
-                    </div>
-                </Layout>
-    
-            </>
-        )
-    }
+    return(
+        <Layout>
+            <Loader/>
+        </Layout>
+    )
     
 }
 
