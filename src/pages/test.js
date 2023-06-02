@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {  } from "@fortawesome/free-solid-svg-icons";
 import {  } from "@fortawesome/free-regular-svg-icons";
 
-function Test() {
+function Test2() {
 
     return (
         <>
@@ -14,4 +14,4 @@ function Test() {
 }
 
 
-export default Test
+export default Test2
