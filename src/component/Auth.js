@@ -1,15 +1,16 @@
 import { useState } from 'react'
-// import { supabase } from '../utils/supabaseClient'
 import styles from '../styles/Auth.module.css'
+import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 
 export default function Auth() {
   const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
+  const supabase = useSupabaseClient()
 
   const handleLogin = async (email) => {
     try {
       setLoading(true)
-      const { error } = await supabase.auth.signIn({ email })
+      const { error } = await supabase.auth.signInWithOtp({ email })
       if (error) throw error
       alert('Check your email for the login link!')
     } catch (error) {

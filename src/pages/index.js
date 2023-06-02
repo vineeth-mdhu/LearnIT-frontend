@@ -16,7 +16,7 @@ export default function Home() {
         <title>LearnIT</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Layout>
+      <Layout skip_auth={true}>
         <div>
           <VideoSection/>
           <Features/>
