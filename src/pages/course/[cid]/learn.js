@@ -15,20 +15,14 @@ import Link from 'next/link'
 import Layout from '@/component/Layout'
 import Sidebar from '@/component/Sidebar';
 
-import cpp from '@/courses/cpp/content.js'
-import test from '@/courses/test.md'
-import module1 from '@/courses/cpp/module1';
-import module2 from '@/courses/cpp/module2';
-import module3 from '@/courses/cpp/module3';
-import module5 from '@/courses/cpp/module5';
 import Button from '@/component/Button';
 import Loader from '@/component/Loader';
 
 
 function CourseLearn() {
     const [sidebarToogle, setSidebarToogle] = useState(false)
-    var modules = [module1,module2,module3,module5]
     const supabase = useSupabaseClient()
+    const user = useUser()
 
     const toogleSidebar = ()=>{
         setSidebarToogle(!sidebarToogle)
@@ -36,8 +30,9 @@ function CourseLearn() {
 
     const [data,setData]=useState(null)
     const [loading, setLoading] = useState(true)
-    const [mid, setMid] = useState(0)
+    const [mid, setMid] = useState(null)
     const [module,setModule]=useState("")
+    const [userEnrollment, setUserEnrollment] = useState(null)
 
     const router = useRouter();
     const {cid} = router.query;
@@ -47,6 +42,11 @@ function CourseLearn() {
         // fetchModule()
         console.log(cid,mid)
     }, [cid])
+
+    useEffect(() => {
+        console.log("test")
+        fetchUserData()
+    }, [user])
 
     useEffect(() => {
         fetchModule()
@@ -76,6 +76,38 @@ function CourseLearn() {
             
     }
 
+    async function fetchUserData() {
+        if(user)
+        {
+            try {
+                setLoading(true)
+                console.log(user)
+    
+                let { data, error, status } = await supabase
+                .from('user_enrollment')
+                .select('*, courses ( * )')
+                .eq('user_id',user.id)
+                .eq('course_id', cid)
+            
+                if (error && status !== 406) {
+                    throw error
+                }
+            
+                if (data) {
+                    console.log(data[0],"user enroll")
+                    const test= data.map(element => element.course_id);
+                    setUserEnrollment(data[0])
+                }
+                } catch (error) {
+                // alert('Error loading user data!')
+                    console.log(error)
+                } finally {
+                setLoading(false)
+            }
+        }
+        
+    }
+
     async function fetchData() {
         if(cid)
         {
@@ -94,6 +126,7 @@ function CourseLearn() {
                 if (data) {
                     console.log(data[0])
                     setData(data[0])
+                    setMid(0)
                 }
               } catch (error) {
                 // alert('Error loading user data!')
@@ -104,14 +137,36 @@ function CourseLearn() {
         }
     }
 
-    if( cid && data && !loading)
+    async function updateProgress() {
+        try {
+            setLoading(true)
+            var newProgress = userEnrollment.progress
+            newProgress.push(mid)
+
+            const { error } = await supabase
+            .from('user_enrollment')
+            .update({progress: newProgress})
+            .eq('enroll_id',userEnrollment.enroll_id)
+
+            if (error) throw error
+      
+          } catch (error) {
+            // alert('Error loading user data!')
+            console.log(error)
+          } finally {
+            setLoading(false)
+            // router.reload(window.location.pathname)
+          }
+    }
+
+    if( cid && data && !loading && userEnrollment)
     return (
         <>
             
             <Layout>
                 <div className={styles.main}>
                     <div className={sidebarToogle?styles.sidebar+' '+styles.sidebar_show:styles.sidebar+' '+styles.sidebar_hide}>
-                        <Sidebar content={data.modules} course_name={data.course_name} course={cid} selected={mid} update_mid={setMid}/>
+                        <Sidebar user_enrollment={userEnrollment} content={data.modules} course_name={data.course_name} course={cid} selected={mid} update_mid={setMid}/>
                     </div>
                     <div className={styles.container}>
                         <h1 style={{marginBottom:'20px', textDecoration: 'underline'}}>{data.modules[mid].title}</h1>
@@ -140,16 +195,21 @@ function CourseLearn() {
                         }
                         
                         <div style={{display:'flex', alignItems:'center'}}>
-                            <Button  buttonStyle="btn_primary" buttonSize="btn_small" link='#' >
+                            <Button  buttonStyle="btn_primary" buttonSize="btn_small" link='#' onClick={()=>{updateProgress()}}>
                                 <div style={{display:'flex', alignItems:'center'}}>
                                     <p style={{marginRight:'10px'}}>Mark As Complete</p><FontAwesomeIcon icon={faCheckCircle}/>
                                 </div>
-                            </Button>
-                            <Button  buttonStyle="btn_outline" buttonSize="btn_small" link='#' >
-                                <div style={{display:'flex', alignItems:'center'}}>
-                                    <p style={{marginRight:'10px'}}>Next</p><FontAwesomeIcon icon={faArrowRight}/>
-                                </div>
-                            </Button>
+                            </Button >
+                            {
+                                mid+1<data.modules.length?
+                                <Button  buttonStyle="btn_outline" buttonSize="btn_small" link='#' onClick={()=>{setMid(mid + 1)}}>
+                                    <div style={{display:'flex', alignItems:'center'}}>
+                                        <p style={{marginRight:'10px'}}>Next</p><FontAwesomeIcon icon={faArrowRight}/>
+                                    </div>
+                                </Button>
+                                :""
+                            }
+                            
                         </div>
                     </div> 
                     
@@ -157,12 +217,12 @@ function CourseLearn() {
             </Layout>
         </>
     )
-    else if(cid && data && loading)
+    else if(cid && data && loading && userEnrollment)
         return(
             <Layout>
                 <div className={styles.main}>
                     <div className={sidebarToogle?styles.sidebar+' '+styles.sidebar_show:styles.sidebar+' '+styles.sidebar_hide}>
-                        <Sidebar content={data.modules} course={cid} selected={mid} update_mid={setMid}/>
+                        <Sidebar user_enrollment={userEnrollment} content={data.modules} course={cid} selected={mid} update_mid={setMid}/>
                     </div>
                     <div className={styles.container}>
                         <Loader/>

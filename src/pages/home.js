@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-// import { supabase } from '../utils/supabaseClient'
+import { useUser, useSupabaseClient, useSession } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
 import dynamic from "next/dynamic";
 
@@ -8,138 +8,83 @@ import Link from 'next/link'
 import Layout from '../component/Layout'
 import CourseCard from '@/component/CourseCard';
 import Footer from '@/component/Footer';
-// import Card from '../component/Card';
-
+import Loader from '@/component/Loader';
 function Home() {
-    const [profile, setProfile] = useState(null)
-    const [type, setType] = useState(null)
-    const [index, setIndex] = useState(0)
-    const [feedData, setFeedData] = useState(null)
+    const user = useUser()
+    const supabase = useSupabaseClient()
+    const [data, setData] = useState(null)
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        // fetchProfile()
-    }, [])
+        console.log("test")
+        fetchUserData()
+    }, [user])
 
-    useEffect(() => {
-        // fetchData()
-    }, [profile])
-
-    useEffect(() => {
-        // fetchFeed()
-    }, [type])
-
-    async function fetchProfile() {
-        try {
-            const profileData = await supabase.auth.user()
-
-            if (profileData) {
-                setProfile(profileData)
-            }
-
-        } catch (error) {
-            alert(error.message)
-        }
-    }
-
-    async function fetchData() {
-        if (profile)
+    async function fetchUserData() {
+        if(user)
+        {
             try {
-                const { data, error } = await supabase.from('type').select('*').eq('entity_id', profile.id)
-
+                setLoading(true)
+                console.log(user)
+    
+                let { data, error, status } = await supabase
+                .from('user_enrollment')
+                .select('*, courses ( * )')
+                .eq('user_id',user.id)
+            
+                if (error && status !== 406) {
+                    throw error
+                }
+            
                 if (data) {
-                    console.log(data[0].type)
-                    setType(data[0].type)
+                    console.log(data,"test")
+                    setData(data)
                 }
-
-            } catch (error) {
-                alert(error.message)
-            }
-    }
-
-    async function fetchFeed() {
-        if (profile && type) {
-            if (type == "organization") {
-                let aff = []
-                try {
-                    const { data, error } = await supabase.from('organization').select('*').eq('id', profile.id)
-
-                    if (data) {
-                        console.log('afflesi', data[0].affeliate_org)
-                        aff = [...data[0].affeliate_org]
-                        console.log(aff)
-                        // setType(data[0].type)
-                        try {
-                            const { data, error } = await supabase.from('post').select('*,organization(*)').in('owner_id', aff)
-
-                            if (data) {
-                                console.log(data)
-                                setFeedData(data)
-                            }
-
-                        } catch (error) {
-                            console.log(error.message)
-                        }
-                    }
-
                 } catch (error) {
-                    console.log(error.message)
-                }
-            }
-            else {
-                const success = await supabase
-                    .from('post_buffer')
-                    .select(
-                        'post(*,organization(*))'
-                    )
-                    .eq('user_id', profile.id)
-                    .order('created_at', { ascending: false })
-
-                    // setIndex(index+6)
-
-                if (success) {
-                    console.log(success.data)
-                    setFeedData(success.data)
-                }
+                // alert('Error loading user data!')
+                    console.log(error)
+                } finally {
+                setLoading(false)
             }
         }
+        
     }
-    
+
+    if(data){
+        var courses = [...data].map((item,index)=>{return(
+            <CourseCard
+                // badge='Sale-50%'
+                label='Beginner'
+                src={item.courses.banner}
+                course_id={item.courses.course_id}
+                category='Programming'
+                title={item.courses.course_name}
+                detail={item.courses.desc}
+                key={index}
+            />
+        )})
+    }
+
+    if(!loading && data)
     return (
         <>
             <Layout>
                 <div className={styles.main}>
                     <h2>My Courses</h2>
                     <div className={styles.course_display}>
-                    <CourseCard
-                        // badge='Sale-50%'
-                        label='Beginner'
-                        src='images/img-6.peg'
-                        category='Programming'
-                        title='C++'
-                        detail=''
-                    />
-                    <CourseCard
-                        // badge='Sale-50%'
-                        label='Beginner'
-                        src='images/img-6.jg'
-                        category='Programming'
-                        title='Python'
-                        detail=''
-                    />
-                    <CourseCard
-                        // badge='Sale-50%'
-                        label='Beginner'
-                        src='images/img-6.jpe'
-                        category='Programming'
-                        title='Computer Networks'
-                        detail=''
-                    />
+                        {courses}
                     </div>
                     <Footer/>
                 </div>
             </Layout>
 
         </>
+    )
+    else
+    return(
+        <Layout>
+            <Loader/>
+        </Layout>
     )
     
 }

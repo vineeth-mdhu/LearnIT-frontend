@@ -53,6 +53,7 @@ function Explore() {
                     category='Programming'
                     title={item.course_name}
                     detail={item.desc}
+                    key={index}
                 />
         )})
     }

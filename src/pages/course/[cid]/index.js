@@ -10,7 +10,7 @@ import Link from 'next/link'
 import Layout from '@/component/Layout'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheckCircle, faArrowRight , faCirclePlus} from "@fortawesome/free-solid-svg-icons";
+import { faCheckCircle, faArrowRight , faCirclePlus, faListCheck} from "@fortawesome/free-solid-svg-icons";
 import { faCirclePlay, faCircle, faFileLines, faFileCode } from "@fortawesome/free-regular-svg-icons";
 import Button from '@/component/Button';
 import Loader from '@/component/Loader';
@@ -22,14 +22,22 @@ function CourseOverview() {
     const router = useRouter();
     const {cid} = router.query;
 
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
     const [content, setContent] = useState(null)
     const [overview, setOverview] = useState(null)
+    const [userEnrollment, setUserEnrollment] = useState(null)
+    const [userAllEnrollment, setUserAllEnrollment] = useState(null)
+    
 
     useEffect(() => {
         fetchData()
         console.log(cid)
     }, [])
+
+    useEffect(() => {
+        console.log("test")
+        fetchUserData()
+    }, [user])
 
     useEffect(() => {
         fetchOverview()
@@ -63,6 +71,38 @@ function CourseOverview() {
         }
     }
 
+    async function fetchUserData() {
+        if(user)
+        {
+            try {
+                setLoading(true)
+                console.log(user)
+    
+                let { data, error, status } = await supabase
+                .from('user_enrollment')
+                .select('*, courses ( * )')
+                .eq('user_id',user.id)
+            
+                if (error && status !== 406) {
+                    throw error
+                }
+            
+                if (data) {
+                    const test= data.map(element => element.course_id);
+                    console.log(test,"test")
+                    setUserEnrollment(test)
+                    setUserAllEnrollment(data)
+                }
+                } catch (error) {
+                // alert('Error loading user data!')
+                    console.log(error)
+                } finally {
+                setLoading(false)
+            }
+        }
+        
+    }
+
     async function fetchOverview() {
         if(content)
             try {
@@ -80,38 +120,82 @@ function CourseOverview() {
               }
     }
 
-    if(content && overview)
+    async function addCourse(id) {
+        try {
+            setLoading(true)
+            const query = {
+                user_id: user.id,
+                course_id: id,
+                progress: [],
+                completed: false,
+            }
+            console.log(query)
+
+            const { error } = await supabase
+            .from('user_enrollment')
+            .insert(query)
+
+            if (error) throw error
+      
+          } catch (error) {
+            // alert('Error loading user data!')
+            console.log(error)
+          } finally {
+            setLoading(false)
+            router.reload(window.location.pathname)
+          }
+    }
+
+    if(content && overview && userEnrollment)
     return (
         <>
             <Layout>
                 <div className={styles.main}>
                     
                     <div className={styles.banner}>
-                        <h1>{content.course_name} <FontAwesomeIcon icon={faCheckCircle}  style={{color:'green'}}/></h1>
+                        <h1>{content.course_name} 
+                        {   userEnrollment.includes(content.course_id)?
+                                userAllEnrollment.find(x => x.course_id === content.course_id).completed == true?
+                                    <FontAwesomeIcon icon={faCheckCircle}  style={{color:'green', marginLeft:'20px'}}/>
+                                        :
+                                    <FontAwesomeIcon icon={faListCheck}  style={{color:'gray', marginLeft:'20px'}}/>
+                                :
+                                ""
+                                
+                        }
+                        </h1>
                         <div className={styles.iconset}>
                             <div><FontAwesomeIcon icon={faFileLines} /> {content.details.documents} Documents</div>
                             <div><FontAwesomeIcon icon={faCirclePlay}/> {content.details.videos} Videos</div>
                             <div><FontAwesomeIcon icon={faFileCode}/> {content.details.questions} Questions</div>
                         </div>
-                        <Link href={{pathname:'/course/'+content.course_id+'/learn'}}>
-                            <Button  buttonStyle="btn_outline" buttonSize="btn_small" link='#' >
-                                <div style={{display:'flex', alignItems:'center'}}>
-                                    <p style={{marginRight:'10px'}}>Start Learning</p><FontAwesomeIcon icon={faArrowRight}/>
+                        <div>Completed  { userAllEnrollment.find(x => x.course_id === content.course_id).progress.length}/{content.modules.length}  Chapters</div>
+                        {
+                            userEnrollment.includes(content.course_id)?
+                                <div>
+                                    <Link href={{pathname:'/course/'+content.course_id+'/learn'}}>
+                                        <Button  buttonStyle="btn_outline" buttonSize="btn_small" link='#' >
+                                            <div style={{display:'flex', alignItems:'center'}}>
+                                                <p style={{marginRight:'10px'}}>Start Learning</p><FontAwesomeIcon icon={faArrowRight}/>
+                                            </div>
+                                        </Button>
+                                    </Link>
+                                    <Link href={{pathname:'/course/'+content.course_id+'/evaluation'}}>
+                                        <Button  buttonStyle="btn_outline" buttonSize="btn_small" link='#' >
+                                            <div style={{display:'flex', alignItems:'center'}}>
+                                                <p style={{marginRight:'10px'}}>Take Test</p><FontAwesomeIcon icon={faArrowRight}/>
+                                            </div>
+                                        </Button>
+                                    </Link>
                                 </div>
-                            </Button>
-                        </Link>
-                        <Link href={{pathname:'/course/'+content.course_id+'/evaluation'}}>
-                            <Button  buttonStyle="btn_outline" buttonSize="btn_small" link='#' >
-                                <div style={{display:'flex', alignItems:'center'}}>
-                                    <p style={{marginRight:'10px'}}>Take Test</p><FontAwesomeIcon icon={faArrowRight}/>
-                                </div>
-                            </Button>
-                        </Link>
-                        <Button  buttonStyle="btn_outline" buttonSize="btn_small" link='#' >
-                            <div style={{display:'flex', alignItems:'center'}}>
-                                <p style={{marginRight:'10px'}}>Add To Courses</p><FontAwesomeIcon icon={faCirclePlus}/>
-                            </div>
-                        </Button>
+
+                            :
+                                <Button  buttonStyle="btn_outline" buttonSize="btn_small" link='#' onClick={()=>{addCourse(content.course_id)}}>
+                                    <div style={{display:'flex', alignItems:'center'}}>
+                                        <p style={{marginRight:'10px'}}>Add To Courses</p><FontAwesomeIcon icon={faCirclePlus}/>
+                                    </div>
+                                </Button>
+                        }
                     </div>
                     <div className={styles.desc}>
                         <Markdown options={{

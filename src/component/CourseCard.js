@@ -20,7 +20,6 @@ function CourseCard(props) {
                             {/* <div className={styles.course_price} ><small>{props.priceOld}</small>{props.price}</div> */}
                             <div className={styles.course_links} >
                                 <i className="far fa-plus-circle"></i>
-                                <a href={props.path} target='blank'><i className="far fa-play"></i></a>
                             </div>
                         </div>
                     </div>

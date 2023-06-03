@@ -32,10 +32,10 @@ function Sidebar(props) {
                                         <p style={{marginLeft:'15px'}}>{item.title}</p>
                                     </div>
                                     <div style={{marginLeft:'10px'}}>
-                                        {props.selected==index?
-                                            <FontAwesomeIcon icon={faCircle} className={styles.icon}/>
-                                            :
+                                        {props.user_enrollment.progress.includes(index)?
                                             <FontAwesomeIcon icon={faCheckCircle} className={styles.icon}/>
+                                            :
+                                            <FontAwesomeIcon icon={faCircle} className={styles.icon}/>
                                         }
                                     </div>
                                 </div>
