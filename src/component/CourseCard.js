@@ -5,7 +5,7 @@ import Link from 'next/link'
 function CourseCard(props) {
     return (
         <>
-        <Link href={'/course/'+props.course_id} style={{flexGrow:'2'}}>
+        <Link href={'/course/'+props.course_id} style={{flexGrow:'0'}}>
             <li className={styles.course_cards_item}>
                 <div className={styles.course_card}>
                     <div className={styles.badge} style={{display:props.badge?'':'none'}}>{props.badge}</div>

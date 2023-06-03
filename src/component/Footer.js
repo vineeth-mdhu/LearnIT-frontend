@@ -7,10 +7,10 @@ function Footer() {
     <div className={styles.footer_container} >
       <section className={styles.footer_subscription} >
         <p className={styles.footer_subscription_heading}>
-          Join the QtPi Robotics newsletter to receive our best deals
+          Join the Learning Revolution. With AI generated course recommendations and evaluations.
         </p>
         <p className={styles.footer_subscription_text}>
-          You can unsubscribe at any time.
+          Join The Newsletter
         </p>
         <div className={styles.input_areas} >
           <form>

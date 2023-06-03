@@ -39,6 +39,11 @@ function CourseLearn() {
 
     useEffect(() => {
         fetchData()
+        fetchUserData()
+    }, [])
+
+    useEffect(() => {
+        fetchData()
         // fetchModule()
         console.log(cid,mid)
     }, [cid])
@@ -51,6 +56,12 @@ function CourseLearn() {
     useEffect(() => {
         fetchModule()
     }, [mid])
+
+    var updateMid = (i) => {
+        setLoading(true)
+        setMid(i)
+        setLoading(false)
+    }
 
     async function fetchModule() {
         if(data)
@@ -166,7 +177,7 @@ function CourseLearn() {
             <Layout>
                 <div className={styles.main}>
                     <div className={sidebarToogle?styles.sidebar+' '+styles.sidebar_show:styles.sidebar+' '+styles.sidebar_hide}>
-                        <Sidebar user_enrollment={userEnrollment} content={data.modules} course_name={data.course_name} course={cid} selected={mid} update_mid={setMid}/>
+                        <Sidebar user_enrollment={userEnrollment} content={data.modules} course_name={data.course_name} course={cid} selected={mid} update_mid={updateMid}/>
                     </div>
                     <div className={styles.container}>
                         <h1 style={{marginBottom:'20px', textDecoration: 'underline'}}>{data.modules[mid].title}</h1>

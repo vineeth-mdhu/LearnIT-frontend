@@ -4,7 +4,7 @@
 }
 
 .video_container{
-    color:white;
+    color:black;
     height: 500px;
     width: 100%;
     overflow: hidden;
@@ -12,7 +12,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.3);
+    background-color: #f2f6fd;
+    /* box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.3); */
     object-fit: contain;
 }
 
@@ -25,7 +26,7 @@
     left: 0;
     z-index: -1;
     transition: all .5s;
-    filter: grayscale(0%) contrast(1.3) blur(3px);
+    filter: contrast(1.3) blur(3px);
 }
 
 .bgImg::after{
@@ -43,7 +44,7 @@
 .video_container > h1 {
     font-weight: 300;
     text-align: center;
-    color: var(--white);
+    color: black;
     font-size: 50px;
     margin-top: 0px;
 }
@@ -55,7 +56,7 @@
     text-align: center;
     font-weight: 300;
     margin-top: 8px;
-    color: var(--white);
+    color: black;
     font-size: 35px;
 }
 .video_container p .pbold{

@@ -169,10 +169,15 @@ function CourseOverview() {
                             <div><FontAwesomeIcon icon={faCirclePlay}/> {content.details.videos} Videos</div>
                             <div><FontAwesomeIcon icon={faFileCode}/> {content.details.questions} Questions</div>
                         </div>
-                        <div>Completed  { userAllEnrollment.find(x => x.course_id === content.course_id).progress.length}/{content.modules.length}  Chapters</div>
+                        {
+                            userAllEnrollment!=null && userAllEnrollment.find(x => x.course_id === content.course_id)?
+                            <div style={{margin:'10px 10px'}}>Completed  { userAllEnrollment.find(x => x.course_id === content.course_id).progress.length}/{content.modules.length}  Chapters</div>
+                            :
+                            ""
+                        }
                         {
                             userEnrollment.includes(content.course_id)?
-                                <div>
+                                <div style={{display:'flex'}}>
                                     <Link href={{pathname:'/course/'+content.course_id+'/learn'}}>
                                         <Button  buttonStyle="btn_outline" buttonSize="btn_small" link='#' >
                                             <div style={{display:'flex', alignItems:'center'}}>

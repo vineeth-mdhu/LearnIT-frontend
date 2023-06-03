@@ -5,6 +5,7 @@
 }
 
 .course_display{
+    margin-bottom: 150px;
     width: 70%;
     display: flex;
     align-items: center;

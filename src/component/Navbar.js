@@ -45,7 +45,7 @@ function Navbar({session}) {
             <div className={styles.navbar}>
                 <div className={styles.navbar_container}>
                     <div className={styles.navbar_logo}>
-                        <Link href='/home'><p className={styles.navbar_logo_name}>LearnIT</p></Link>
+                        <Link href='/'><p className={styles.navbar_logo_name}>LearnIT</p></Link>
                     </div>
 
                     <ul className={styles.nav_menu}>
@@ -65,9 +65,9 @@ function Navbar({session}) {
                                     <Link href='/home'><i className="far fa-home" style={{fontSize:'1.5em'}}></i></Link>
                                 </li>
                                 
-                                <li className={styles.nav_item}>
+                                {/* <li className={styles.nav_item}>
                                     <Link href='/test'><i className="far fa-hammer" style={{fontSize:'1.5em'}}></i></Link>
-                                </li>
+                                </li> */}
                             </div>
                             :
                             <></>

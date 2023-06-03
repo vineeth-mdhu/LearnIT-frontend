@@ -1,6 +1,6 @@
 .home__features{
     background-color: white;
-    height: 200px;
+    height: 300px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -27,5 +27,5 @@
 
 .home__features .feature_desc{
     font-size: 13px;
-    font-weight: lighter;
+    font-weight: normal;
 }
