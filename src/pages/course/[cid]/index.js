@@ -192,6 +192,13 @@ function CourseOverview() {
                                             </div>
                                         </Button>
                                     </Link>
+                                    <Link href={{pathname:'/course/'+content.course_id+'/report'}}>
+                                        <Button  buttonStyle="btn_outline" buttonSize="btn_small" link='#' >
+                                            <div style={{display:'flex', alignItems:'center'}}>
+                                                <p style={{marginRight:'10px'}}>View Report</p><FontAwesomeIcon icon={faArrowRight}/>
+                                            </div>
+                                        </Button>
+                                    </Link>
                                 </div>
 
                             :

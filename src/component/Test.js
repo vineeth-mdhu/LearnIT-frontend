@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
-const Test = ({ questions, timeLimit, cid }) => {
+const Test = ({ questions, timeLimit, cid, submitResult }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [showResults, setShowResults] = useState(false);
@@ -37,6 +37,8 @@ const Test = ({ questions, timeLimit, cid }) => {
   const handleSubmit = () => {
     setShowResults(true);
     setRemainingTime(0);
+    const score = calculateScore();
+    submitResult(score,selectedAnswers);
   };
 
   const handleShowResult = () => {
