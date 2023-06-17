@@ -135,9 +135,22 @@ function CourseOverview() {
             }
             console.log(query)
 
-            const { error } = await supabase
+            const queer = {
+                student_id: user.id,
+                course_id: id,
+                current_state: [0,0,0,0,0,0],
+                next_state: [0,0,0,0,0,0],
+            }
+
+            var { error } = await supabase
             .from('user_enrollment')
             .insert(query)
+
+            if (error) throw error
+
+            var { error } = await supabase
+            .from('state')
+            .insert(queer)
 
             if (error) throw error
       

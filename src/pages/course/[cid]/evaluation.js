@@ -142,7 +142,7 @@ async function submitResult(score,selectedAnswers) {
               var temp ={
                 correct:true,
                 difficulty:question.difficulty,
-                skill:question.skill
+                skills:question.skill
               }
               queer.push(temp)
             }
@@ -182,10 +182,10 @@ async function submitResult(score,selectedAnswers) {
           .eq('user_id',user.id)
 
           var response = await axios.post('https://learnit-backend.onrender.com/submit', { course_id: cid, student_id: user.id, qs: queer }, { mode: 'no-cors' })
-          console.log(response.data,'dsadasd');
+          console.log(response,'submit');
 
           var response = await axios.get('https://learnit-model1.onrender.com/recommend?course_id='+cid+'&student_id='+user.id, { mode: 'no-cors' })
-          console.log(response.data,'dsadasd');
+          console.log(response,'model');
     
           if (error && status !== 406) {
             throw error

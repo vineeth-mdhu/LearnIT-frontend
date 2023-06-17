@@ -15,10 +15,10 @@ function Report() {
     //     values: [10, 20, 15, 25, 30, 22]
     //   };
 
-    var polarChartData = {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple','uda'],
-      values: [12, 19, 3, 5, 2,10]
-    };
+    // var polarChartData = {
+    //   labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple','uda'],
+    //   values: [12, 19, 3, 5, 2,10]
+    // };
 
     // var donutChartData = {
     //   labels: ['Completed', 'Not Completed'],
@@ -84,8 +84,8 @@ function Report() {
 
                 var PolarChartData = {
                   labels: data[0].courses.skills,
-                  // values: data[0].skill_state
-                  values: [0.1,0.4,0.73,0.43,0.8,0.35]
+                  values: data[0].skill_state
+                  // values: [0.1,0.4,0.73,0.43,0.8,0.35]
                 };
 
                 setResults(chartData)
