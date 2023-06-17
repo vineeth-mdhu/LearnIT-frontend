@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import styles from '../styles/Sidebar.module.css'
 import Link from 'next/link'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheckCircle, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faCheckCircle,faCircleExclamation , faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { faCirclePlay, faCircle, faFileLines, faFileCode } from "@fortawesome/free-regular-svg-icons";
 
 function Sidebar(props) {
@@ -15,7 +15,7 @@ function Sidebar(props) {
         props.update_mid(mid)
     }
 
-    // console.log(props.content)
+    console.log('asdas',props.user_enrollment)
     var list_items = [...props.content].map((item,index)=>{return(
                         <li key={index} className={props.selected==index?styles.nav_item+' '+styles.selected:styles.nav_item} style={{margin:'1px 0'}}>
                                 <div style={{marginLeft:'5px',display:'flex', alignItems:'center', justifyContent:'space-between'}} onClick={()=>update(index)}>
@@ -32,7 +32,11 @@ function Sidebar(props) {
                                         <p style={{marginLeft:'15px'}}>{item.title}</p>
                                     </div>
                                     <div style={{marginLeft:'10px'}}>
-                                        {props.user_enrollment.progress.includes(index)?
+                                        {
+                                        props.user_enrollment.recommendation == index?
+                                        <FontAwesomeIcon icon={faCircleExclamation} className={styles.icon} style={{color:'orange'}}/>
+                                        :
+                                        props.user_enrollment.progress.includes(index)?
                                             <FontAwesomeIcon icon={faCheckCircle} className={styles.icon}/>
                                             :
                                             <FontAwesomeIcon icon={faCircle} className={styles.icon}/>

@@ -27,7 +27,7 @@ function CourseOverview() {
     const [overview, setOverview] = useState(null)
     const [userEnrollment, setUserEnrollment] = useState(null)
     const [userAllEnrollment, setUserAllEnrollment] = useState(null)
-    
+    const [recommendation, setRecommendation] = useState(null)
 
     useEffect(() => {
         fetchData()
@@ -92,6 +92,10 @@ function CourseOverview() {
                     console.log(test,"test")
                     setUserEnrollment(test)
                     setUserAllEnrollment(data)
+                    data.forEach(entry=>{
+                        if(entry.course_id == cid)
+                            setRecommendation(entry.recommendation)
+                    })
                 }
                 } catch (error) {
                 // alert('Error loading user data!')
@@ -210,6 +214,22 @@ function CourseOverview() {
                         }
                     </div>
                     <div className={styles.desc}>
+                        {
+                            recommendation?
+                            <div>
+                                <h1>Recommendation</h1>
+                                <Link href={{pathname:'/course/'+content.course_id+'/learn'}}>
+                                    <Button  buttonStyle="btn_outline" buttonSize="btn_small" link='#' >
+                                        <div style={{display:'flex', alignItems:'center'}}>
+                                            <p style={{marginRight:'10px'}}>{content.modules[recommendation].title}</p><FontAwesomeIcon icon={faArrowRight}/>
+                                        </div>
+                                    </Button>
+                                </Link>
+                            </div>
+                            :
+                            ""
+                        }
+                        
                         <Markdown options={{
                             overrides: {
                             Code: {
